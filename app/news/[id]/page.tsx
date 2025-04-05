@@ -8,22 +8,26 @@ type NewsItem = {
   publishedAt: string;
 };
 
+type NewsResponse = {
+  contents: NewsItem[];
+};
+
 // 静的パスを生成
 export async function generateStaticParams(): Promise<{ id: string }[]> {
-  const data = await client.get({ endpoint: 'news' });
-
-  return data.contents.map((item: NewsItem) => ({
+  const data: NewsResponse = await client.get({ endpoint: 'news' });
+  return data.contents.map((item) => ({
     id: item.id,
   }));
 }
 
-// ✅ 型エラーを完全に回避する最終手段
-const NewsDetailPage = async ({
-  params,
-}: {
-  params: { id: string };
-}) => {
-  const data = await client.get({
+type PageProps = {
+  params: {
+    id: string;
+  };
+};
+
+export default async function NewsDetailPage({ params }: PageProps) {
+  const data: NewsItem = await client.get({
     endpoint: 'news',
     contentId: params.id,
   });
@@ -46,7 +50,4 @@ const NewsDetailPage = async ({
       </article>
     </main>
   );
-};
-
-// ✅ デフォルトエクスポートは別にすることで型制約を避ける
-export default NewsDetailPage;
+}
