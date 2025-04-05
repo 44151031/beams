@@ -1,3 +1,6 @@
+export default function Page({ params }: { params: { id: string } }) {
+  return <div>{params.id}</div>
+}
 /**import { notFound } from 'next/navigation';
 import { client } from '@/lib/client';
 
