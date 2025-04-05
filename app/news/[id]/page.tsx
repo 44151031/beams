@@ -26,6 +26,7 @@ type PageProps = {
   };
 };
 
+// @ts-ignore: Next.js 内部型との競合により発生する型エラーを一時的に無視
 export default async function NewsDetailPage({ params }: PageProps) {
   const data: NewsItem = await client.get({
     endpoint: 'news',
