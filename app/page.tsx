@@ -41,6 +41,35 @@ export default async function Home() {
           </Link>
         </div>
       </section>
+      <h1 className="text-xl font-bold mb-4">トップページ</h1>
+      <ul className="space-y-2">
+        <li>
+          <Link href="/news" className="text-blue-600 hover:underline">
+            お知らせ一覧（/news）
+          </Link>
+        </li>
+        <li>
+          <Link href="/pages/staff" className="text-blue-600 hover:underline">
+            スタッフ紹介（/pages/staff）
+          </Link>
+        </li>
+        <li>
+          <Link href="/pages/about" className="text-blue-600 hover:underline">
+            サロン情報（/pages/about）
+          </Link>
+        </li>
+        <li>
+          <Link href="/pages/menu" className="text-blue-600 hover:underline">
+            メニュー（/pages/menu）
+          </Link>
+        </li>
+        <li>
+          <Link href="/news/yg8m5nyue" className="text-blue-600 hover:underline">
+            特定のお知らせ記事（/news/yg8m5nyue）
+          </Link>
+        </li>
+      </ul>
+
     </main>
   );
 }
