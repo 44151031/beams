@@ -8,12 +8,20 @@ type PageContent = {
   slug: string;
 };
 
-type Params = {
+// ✅ generateStaticParamsで使うパラメータ型
+type StaticParams = {
   slug: string;
 };
 
+// ✅ ページのprops型
+interface PageProps {
+  params: {
+    slug: string;
+  };
+}
+
 // 静的パス生成：全slugを取得
-export async function generateStaticParams(): Promise<{ slug: string }[]> {
+export async function generateStaticParams(): Promise<StaticParams[]> {
   const data = await client.get({ endpoint: 'pages' });
 
   return data.contents.map((page: PageContent) => ({
@@ -22,7 +30,7 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
 }
 
 // ページ本体
-export default async function PageDetail({ params }: { params: Params }) {
+export default async function PageDetail({ params }: PageProps) {
   const data = await client.get({
     endpoint: 'pages',
     queries: { filters: `slug[equals]${params.slug}` },
