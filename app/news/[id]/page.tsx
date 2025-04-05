@@ -1,54 +1,51 @@
+// app/news/[id]/page.tsx
 import { notFound } from 'next/navigation';
 import { client } from '@/lib/client';
 
-type NewsItem = {
+type News = {
   id: string;
   title: string;
   content: string;
   publishedAt: string;
 };
 
-type NewsResponse = {
-  contents: NewsItem[];
-};
-
-// 静的パスを生成
-export async function generateStaticParams(): Promise<{ id: string }[]> {
-  const data: NewsResponse = await client.get({ endpoint: 'news' });
-  return data.contents.map((item) => ({
-    id: item.id,
-  }));
-}
-
-type PageProps = {
+type Props = {
   params: {
     id: string;
   };
 };
 
-// @ts-ignore: Next.js 内部型との競合により発生する型エラーを一時的に無視
-export default async function NewsDetailPage({ params }: PageProps) {
-  const data: NewsItem = await client.get({
-    endpoint: 'news',
-    contentId: params.id,
-  });
+export const revalidate = 60; // ISR設定（任意）
 
-  if (!data || Object.keys(data).length === 0) {
+export default async function NewsDetailPage({ params }: Props) {
+  const { id } = params;
+
+  let news: News | null = null;
+
+  try {
+    news = await client.getListDetail<News>({
+      endpoint: 'news',
+      contentId: id,
+    });
+  } catch (error) {
+    console.error('Failed to fetch news detail:', error);
+    notFound();
+  }
+
+  if (!news) {
     notFound();
   }
 
   return (
-    <main className="p-8 max-w-3xl mx-auto">
-      <article>
-        <h1 className="text-2xl font-bold mb-2">{data.title}</h1>
-        <p className="text-gray-500">
-          {new Date(data.publishedAt).toLocaleDateString('ja-JP')}
-        </p>
-        <div
-          className="prose mt-6"
-          dangerouslySetInnerHTML={{ __html: data.content }}
-        />
-      </article>
+    <main className="max-w-3xl mx-auto px-4 py-8">
+      <h1 className="text-2xl font-bold mb-4">{news.title}</h1>
+      <time className="text-sm text-gray-500 block mb-6">
+        {new Date(news.publishedAt).toLocaleDateString()}
+      </time>
+      <div
+        className="prose"
+        dangerouslySetInnerHTML={{ __html: news.content }}
+      />
     </main>
   );
 }
