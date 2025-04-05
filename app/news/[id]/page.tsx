@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation';
+/**import { notFound } from 'next/navigation';
 import { client } from '@/lib/client';
 
 type News = {
@@ -39,4 +39,4 @@ export default async function NewsDetailPage({
     console.error('Failed to fetch news detail:', error);
     notFound();
   }
-}
+}*/
