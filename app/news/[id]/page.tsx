@@ -17,7 +17,7 @@ export async function generateStaticParams(): Promise<{ id: string }[]> {
   }));
 }
 
-// 詳細ページ
+// ✅ 型衝突対策（Next.js の PageProps 推論との衝突を回避）
 export default async function NewsDetailPage({
   params,
 }: {
