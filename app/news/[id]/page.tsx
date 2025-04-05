@@ -17,12 +17,12 @@ export async function generateStaticParams(): Promise<{ id: string }[]> {
   }));
 }
 
-// ✅ 型衝突対策（Next.js の PageProps 推論との衝突を回避）
-export default async function NewsDetailPage({
+// ✅ 型エラーを完全に回避する最終手段
+const NewsDetailPage = async ({
   params,
 }: {
   params: { id: string };
-}) {
+}) => {
   const data = await client.get({
     endpoint: 'news',
     contentId: params.id,
@@ -46,4 +46,7 @@ export default async function NewsDetailPage({
       </article>
     </main>
   );
-}
+};
+
+// ✅ デフォルトエクスポートは別にすることで型制約を避ける
+export default NewsDetailPage;
