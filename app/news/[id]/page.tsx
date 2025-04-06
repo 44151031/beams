@@ -1,6 +1,13 @@
 // app/news/[id]/page.tsx
 import { client } from '@/lib/client';
 import { notFound } from 'next/navigation';
+import type { MicroCMSListResponse } from 'microcms-js-sdk';
+
+type News = {
+  id: string;
+  title: string;
+  content: string;
+};
 
 type Props = {
   params: { id: string };
@@ -9,9 +16,11 @@ type Props = {
 
 // 静的生成のためのパスを取得
 export async function generateStaticParams() {
-  const { contents } = await client.getList({ endpoint: 'news' });
+  const { contents }: MicroCMSListResponse<News> = await client.getList({
+    endpoint: 'news',
+  });
 
-  return contents.map((article: any) => ({
+  return contents.map((article) => ({
     id: article.id,
   }));
 }
@@ -21,7 +30,7 @@ export default async function NewsDetailPage({ params, searchParams }: Props) {
   const { draftKey } = searchParams;
 
   try {
-    const article = await client.getListDetail({
+    const article = await client.getListDetail<News>({
       endpoint: 'news',
       contentId: id,
       queries: draftKey ? { draftKey } : {},
@@ -33,7 +42,7 @@ export default async function NewsDetailPage({ params, searchParams }: Props) {
         <div dangerouslySetInnerHTML={{ __html: article.content }} />
       </article>
     );
-  } catch (error) {
+  } catch {
     notFound();
   }
 }
