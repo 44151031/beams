@@ -1,12 +1,15 @@
-// app/page.tsx
+import Image from 'next/image';
 import Link from 'next/link';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import { client } from '@/lib/client';
 
-type NewsItem = {
+// 型定義
+interface NewsItem {
   id: string;
   title: string;
   publishedAt: string;
-};
+}
 
 export default async function Home() {
   const data = await client.get({
@@ -14,62 +17,279 @@ export default async function Home() {
     queries: { limit: 5, orders: '-publishedAt' },
   });
 
-  return (
-    <main className="text-center p-10 bg-gray-100 min-h-screen">
-      {/* 美容室beamsのキャッチコピー */}
-      <h1 className="text-4xl font-bold text-pink-600">美容室beams</h1>
-      <p className="mt-4 text-gray-700">ようこそ、癒しの空間へ。</p>
+  // ギャラリー画像URL一覧
+const galleryImages = [
+  "/images/topg1.jpg",
+  "/images/topg2.jpg",
+  "/images/topg3.jpg",
+  "/images/topg4.jpg",
+];
 
-      {/* お知らせセクション */}
-      <section className="mt-12 bg-white p-6 rounded-xl shadow-md max-w-xl mx-auto text-left">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">最新のお知らせ</h2>
-        <ul className="space-y-2">
+  return (
+    <>
+      <Header />
+      <main className="bg-gray-100 min-h-screen">
+        {/* メインビジュアル */}
+        <div className="relative w-full h-[60vh] overflow-hidden">
+  <Image
+    src="/images/topmain.jpg"
+    alt="美容室の外観"
+    fill
+    className="object-cover"
+    priority
+  />
+  <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+    <div className="text-white text-center px-4">
+      <h1 className="text-4xl font-bold mb-2">美容室beams</h1>
+      <p className="text-lg">ようこそ、癒しの空間へ。</p>
+    </div>
+  </div>
+</div>
+
+        {/* お知らせセクション */}
+        <section className="bg-white py-16 px-4">
+      <div className="max-w-screen-md mx-auto">
+        {/* 見出し */}
+        <div className="mb-10 text-center">
+          <h2 className="text-3xl font-bold font-en text-gray-800">News</h2>
+        </div>
+
+        {/* ニュースリスト */}
+        <div className="space-y-8">
           {data.contents.map((item: NewsItem) => (
-            <li key={item.id}>
-              <Link
-                href={`/news/${item.id}`}
-                className="text-blue-600 hover:underline"
-              >
-                {item.title}（{new Date(item.publishedAt).toLocaleDateString('ja-JP')})
+            <article
+              key={item.id}
+              className="border-b pb-4 hover:opacity-80 transition-opacity"
+            >
+              <Link href={`/news/${item.id}`}>
+                <p className="text-sm text-gray-500 font-en">
+                  {new Date(item.publishedAt).toLocaleDateString("ja-JP")}
+                </p>
+                {item.category && (
+                  <p className="text-xs text-pink-600 mt-1">{item.category}</p>
+                )}
+                <h3 className="text-lg font-semibold text-gray-800 mt-1">
+                  {item.title}
+                </h3>
               </Link>
-            </li>
+            </article>
           ))}
-        </ul>
-        <div className="mt-4 text-right">
-          <Link href="/news" className="text-sm text-gray-500 hover:underline">
-            → お知らせ一覧を見る
+        </div>
+
+        {/* ボタン */}
+        <div className="mt-10 text-center">
+          <Link href="/news">
+            <Image
+              src="/images/newsbt.png"
+              alt="Newsボタン"
+              width={200}
+              height={60}
+              className="mx-auto hover:opacity-90 transition-opacity"
+            />
           </Link>
         </div>
-      </section>
-      <h1 className="text-xl font-bold mb-4">トップページ</h1>
-      <ul className="space-y-2">
-        <li>
-          <Link href="/news" className="text-blue-600 hover:underline">
-            お知らせ一覧（/news）
-          </Link>
-        </li>
-        <li>
-          <Link href="/pages/staff" className="text-blue-600 hover:underline">
-            スタッフ紹介（/pages/staff）
-          </Link>
-        </li>
-        <li>
-          <Link href="/pages/about" className="text-blue-600 hover:underline">
-            サロン情報（/pages/about）
-          </Link>
-        </li>
-        <li>
-          <Link href="/pages/menu" className="text-blue-600 hover:underline">
-            メニュー（/pages/menu）
-          </Link>
-        </li>
-        <li>
-          <Link href="/news/yg8m5nyue" className="text-blue-600 hover:underline">
-            特定のお知らせ記事（/news/yg8m5nyue）
-          </Link>
-        </li>
-      </ul>
+      </div>
+    </section>
+        {/* 追加するセクション（お知らせの下に配置） */}
+<section className="mt-20 max-w-6xl mx-auto px-4">
+  <div className="flex flex-col md:flex-row items-center gap-8">
+    {/* テキストエリア */}
+    <div className="md:w-1/2 text-center md:text-left text-gray-800">
+      <div className="mb-8">
+        <h2 className="text-4xl font-serif text-teal-800">Concept</h2>
+      </div>
+      <h3 className="text-2xl font-semibold mb-6">美と健康に「力」を注いでいます</h3>
+      <p className="mb-8 leading-relaxed">
+        FIRSTでは、髪だけではなく、美と健康に「力」を注いでいます。<br /><br />
+        美容室は毎月のサイクルで通うからこそ、美と健康のお悩みや状態を見てアドバイスさせていただき、
+        皆様にとって街の主治医のような存在になりたいと考えています。
+      </p>
+      <div>
+        <Link href="/pages/concept" className="inline-block bg-teal-800 text-white px-6 py-2 rounded-full hover:bg-teal-700 transition">
+          READ MORE
+        </Link>
+      </div>
+    </div>
 
-    </main>
+    {/* 画像エリア */}
+    <div className="md:w-1/2">
+      <div className="rounded-xl overflow-hidden shadow-lg">
+        <Image
+          src="/images/gaikan.jpg"
+          alt="サロン外観"
+          width={800}
+          height={600}
+          className="w-full h-auto object-cover"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<section className="bg-white py-16">
+      <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center gap-10">
+        {/* 画像 左側 */}
+        <div className="w-full md:w-1/2">
+          <Image
+            src="/images/naikan.jpg"
+            alt="店内の様子"
+            width={800}
+            height={600}
+            className="rounded-xl w-full h-auto object-cover"
+          />
+        </div>
+
+        {/* テキストエリア */}
+        <div className="w-full md:w-1/2">
+          <div className="mb-6">
+            <h2 className="text-3xl font-bold text-gray-800 mb-2">Commitment</h2>
+            <p className="text-lg text-teal-700 font-medium">FIRSTのこだわり</p>
+          </div>
+          <h2 className="text-3xl font-bold text-gray-800 mb-2">美と健康をトータルに考える</h2>
+          <p className="text-gray-700 leading-relaxed mb-6">
+            美と健康をトータルに考えることは、私たちの生活全体の質を向上させる重要な要素です。
+            <br />
+            <br />
+            ヘアケア、スキンケア、ヘルスケアなど、様々な側面からアプローチすることで、内側から外側まで美しく輝くことができます。
+            <br />
+            <br />
+            さらに、メンタルヘルスケアも取り入れることで、トータルな美と健康を手に入れることができます。
+            <br />
+            <br />
+            美と健康についてYouTubeで随時配信していますので、ご興味のある方はぜひご覧ください。
+          </p>
+
+          <Link
+            href="/pages/commitment"
+            className="inline-block bg-teal-700 text-white px-6 py-2 rounded-full hover:bg-teal-800 transition"
+          >
+            READ MORE
+          </Link>
+        </div>
+      </div>
+    </section>
+
+    <section className="w-full bg-white py-20">
+      <div className="max-w-screen-xl mx-auto px-4">
+        {/* セクションタイトル */}
+        <div className="text-center mb-12">
+          <h1 className="text-3xl font-bold font-serif tracking-wide mb-4">Menu</h1>
+          <p className="text-gray-600 leading-relaxed">
+            私たちは単なる髪を整える場所ではなく、お客様の美しさと健康を促進するために尽力しています。
+            <br />
+            そのために、厳選された製品や施術技術を用いて、お客様の髪や肌に最高のケアを提供しています。
+          </p>
+        </div>
+
+        {/* メニューブロック */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+          <Link
+            href="/pages/menu#cut"
+            className="bg-pink-100 p-6 rounded-lg shadow hover:bg-pink-200 transition"
+          >
+            <p className="text-lg font-semibold">Cut menu</p>
+            <p className="text-sm text-gray-600">カットメニュー</p>
+          </Link>
+
+          <Link
+            href="/pages/menu#spa"
+            className="bg-pink-100 p-6 rounded-lg shadow hover:bg-pink-200 transition"
+          >
+            <p className="text-lg font-semibold">Shampoo menu</p>
+            <p className="text-sm text-gray-600">シャンプーメニュー</p>
+          </Link>
+
+          <Link
+            href="/pages/menu#perm"
+            className="bg-pink-100 p-6 rounded-lg shadow hover:bg-pink-200 transition"
+          >
+            <p className="text-lg font-semibold">Perm menu</p>
+            <p className="text-sm text-gray-600">パーマメニュー</p>
+          </Link>
+
+          <Link
+            href="/pages/menu#color"
+            className="bg-pink-100 p-6 rounded-lg shadow hover:bg-pink-200 transition"
+          >
+            <p className="text-lg font-semibold">Color menu</p>
+            <p className="text-sm text-gray-600">カラーメニュー</p>
+          </Link>
+        </div>
+      </div>
+    </section>
+
+    <section className="bg-white py-16 px-4">
+      <div className="max-w-screen-xl mx-auto">
+        <h2 className="text-center text-3xl font-bold mb-12">Gallery</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {galleryImages.map((url, index) => (
+            <div key={index} className="w-full overflow-hidden rounded-lg">
+              <img
+                src={url}
+                alt={`gallery${index + 1}`}
+                className="w-full h-auto object-cover transition-transform duration-300 hover:scale-105"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+    <section className="bg-white py-16 px-4">
+      <div className="max-w-screen-xl mx-auto">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+          {/* 左側：スタッフ紹介 */}
+          <div className="relative w-full md:w-1/2 group">
+            <Link href="/pages/staff">
+              <div className="relative overflow-hidden rounded-xl shadow-lg cursor-pointer">
+                <Image
+                  src="/images/staff.jpg"
+                  alt="スタッフ紹介"
+                  width={600}
+                  height={400}
+                  className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="absolute bottom-4 left-4 w-32">
+                  <Image
+                    src="/images/staffbt.png"
+                    alt="スタッフボタン"
+                    width={128}
+                    height={40}
+                  />
+                </div>
+              </div>
+            </Link>
+          </div>
+
+          {/* 右側：店舗情報 */}
+          <div className="relative w-full md:w-1/2 group">
+            <div className="mb-4">
+              <h2 className="text-3xl font-bold text-gray-800">About us</h2>
+            </div>
+            <Link href="/pages/about">
+              <div className="relative overflow-hidden rounded-xl shadow-lg cursor-pointer">
+                <Image
+                  src="/images/top_gaikan.jpg"
+                  alt="店舗情報"
+                  width={600}
+                  height={400}
+                  className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="absolute bottom-4 left-4 w-32">
+                  <Image
+                    src="/images/top_kaikan.png"
+                    alt="ショップボタン"
+                    width={128}
+                    height={40}
+                  />
+                </div>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
+      </main>
+      <Footer />
+    </>
   );
 }

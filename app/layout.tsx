@@ -1,6 +1,20 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Noto_Serif_JP, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
+
+const notoSerif = Noto_Serif_JP({
+  weight: ['400', '700'],
+  variable: '--font-noto-serif',
+  display: 'swap',
+  preload: false, // ★ preload を無効化
+});
+
+const cormorant = Cormorant_Garamond({
+  weight: ['400', '700'],
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-cormorant',
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,9 +33,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body
