@@ -18,3 +18,17 @@ export const fetchNews = async () => {
   );
   return res.json();
 };
+
+// カテゴリを取得（追加部分）
+export const fetchCategories = async () => {
+  const res = await fetch(
+    `https://${process.env.MICROCMS_SERVICE_DOMAIN}.microcms.io/api/v1/categories`,
+    {
+      headers: {
+        'X-MICROCMS-API-KEY': process.env.MICROCMS_API_KEY!,
+      },
+      cache: 'no-store',
+    }
+  );
+  return res.json();
+};
