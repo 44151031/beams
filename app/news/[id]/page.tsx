@@ -1,45 +1,39 @@
-export default function Page({ params }: { params: { id: string } }) {
-  return <div>{params.id}</div>
-}
-/**import { notFound } from 'next/navigation';
+// app/news/[id]/page.tsx
 import { client } from '@/lib/client';
+import { notFound } from 'next/navigation';
 
-type News = {
-  id: string;
-  title: string;
-  content: string;
-  publishedAt: string;
+type Props = {
+  params: { id: string };
+  searchParams: { draftKey?: string };
 };
 
-export const revalidate = 60;
+// 静的生成のためのパスを取得
+export async function generateStaticParams() {
+  const { contents } = await client.getList({ endpoint: 'news' });
 
-export default async function NewsDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+  return contents.map((article: any) => ({
+    id: article.id,
+  }));
+}
+
+export default async function NewsDetailPage({ params, searchParams }: Props) {
   const { id } = params;
+  const { draftKey } = searchParams;
 
   try {
-    const news = await client.getListDetail<News>({
+    const article = await client.getListDetail({
       endpoint: 'news',
       contentId: id,
+      queries: draftKey ? { draftKey } : {},
     });
 
     return (
-      <main className="max-w-3xl mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold mb-4">{news.title}</h1>
-        <time className="text-sm text-gray-500 block mb-6">
-          {new Date(news.publishedAt).toLocaleDateString()}
-        </time>
-        <div
-          className="prose"
-          dangerouslySetInnerHTML={{ __html: news.content }}
-        />
-      </main>
+      <article className="prose mx-auto p-4">
+        <h1 className="text-3xl font-bold">{article.title}</h1>
+        <div dangerouslySetInnerHTML={{ __html: article.content }} />
+      </article>
     );
   } catch (error) {
-    console.error('Failed to fetch news detail:', error);
     notFound();
   }
-}*/
+}
