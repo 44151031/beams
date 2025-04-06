@@ -23,10 +23,10 @@ export default async function Home() {
 
   // ギャラリー画像URL一覧
   const galleryImages = [
-    "/images/topg1.jpg",
-    "/images/topg2.jpg",
-    "/images/topg3.jpg",
-    "/images/topg4.jpg",
+    "/images/top/topg1.jpg",
+    "/images/top/topg2.jpg",
+    "/images/top/topg3.jpg",
+    "/images/top/topg4.jpg",
   ];
 
   return (
@@ -36,7 +36,7 @@ export default async function Home() {
         {/* メインビジュアル */}
         <div className="relative w-full h-[60vh] overflow-hidden">
           <Image
-            src="/images/topmain.jpg"
+            src="/images/top/topmain.jpg"
             alt="美容室の外観"
             fill
             className="object-cover"
@@ -119,7 +119,7 @@ export default async function Home() {
             <div className="md:w-1/2">
               <div className="rounded-xl overflow-hidden shadow-lg">
                 <Image
-                  src="/images/gaikan.jpg"
+                  src="/images/top/top1.jpg"
                   alt="サロン外観"
                   width={800}
                   height={600}
@@ -135,7 +135,7 @@ export default async function Home() {
             {/* 画像 左側 */}
             <div className="w-full md:w-1/2">
               <Image
-                src="/images/naikan.jpg"
+                src="/images/top/top2.png"
                 alt="店内の様子"
                 width={800}
                 height={600}
@@ -246,7 +246,7 @@ export default async function Home() {
                 <Link href="/pages/staff">
                   <div className="relative overflow-hidden rounded-xl shadow-lg cursor-pointer">
                     <Image
-                      src="/images/staff.jpg"
+                      src="/images/top/topstaff.jpg"
                       alt="スタッフ紹介"
                       width={600}
                       height={400}
@@ -272,7 +272,7 @@ export default async function Home() {
                 <Link href="/pages/about">
                   <div className="relative overflow-hidden rounded-xl shadow-lg cursor-pointer">
                     <Image
-                      src="/images/top_gaikan.jpg"
+                      src="/images/top/topshop.jpg"
                       alt="店舗情報"
                       width={600}
                       height={400}
