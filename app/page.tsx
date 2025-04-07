@@ -230,22 +230,25 @@ export default async function Home() {
           </div>
         </section>
 
-        <section className="bg-white py-16 px-4">
-          <div className="max-w-screen-xl mx-auto">
-            <h2 className="text-center text-3xl font-bold mb-12">Gallery</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {galleryImages.map((url, index) => (
-                <div key={index} className="w-full overflow-hidden rounded-lg">
-                  <img
-                    src={url}
-                    alt={`gallery${index + 1}`}
-                    className="w-full h-auto object-cover transition-transform duration-300 hover:scale-105"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        <section className="bg-white py-16">
+  <h2 className="text-center text-3xl font-bold mb-12">Gallery</h2>
+
+  {/* 画像を画面いっぱいに広げる + 余白調整 */}
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-6 px-4 sm:px-6 lg:px-12">
+    {galleryImages.map((url, index) => (
+      <div
+        key={index}
+        className="overflow-hidden rounded-lg shadow hover:shadow-lg transition-shadow duration-300"
+      >
+        <img
+          src={url}
+          alt={`gallery${index + 1}`}
+          className="w-full h-auto object-cover transition-transform duration-300 hover:scale-105"
+        />
+      </div>
+    ))}
+  </div>
+</section>
         <section className="bg-white py-16 px-4">
           <div className="max-w-screen-xl mx-auto">
             <div className="flex flex-col md:flex-row justify-between items-center gap-8">
