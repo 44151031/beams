@@ -4,7 +4,8 @@ import { client } from '@/lib/client';
 import type { News } from '@/types/news';
 
 // ✅ props に型アノテーションをしない（Next.jsが自動で補完）
-export default async function NewsDetailPage({ params }: { params: { slug: string } }) {
+export default async function NewsDetailPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   try {
     const data = await client.get<News>({
       endpoint: 'news',
