@@ -3,13 +3,8 @@ import { notFound } from 'next/navigation';
 import { client } from '@/lib/client';
 import type { News } from '@/types/news';
 
-type PageProps = Promise<{
-  params: { slug: string };
-}>;
-
-export default async function NewsDetailPage(props: PageProps) {
-  const { params } = await props;
-
+// ✅ props に型アノテーションをしない（Next.jsが自動で補完）
+export default async function NewsDetailPage({ params }: { params: { slug: string } }) {
   try {
     const data = await client.get<News>({
       endpoint: 'news',
