@@ -3,13 +3,11 @@ import { notFound } from 'next/navigation';
 import { client } from '@/lib/client';
 import type { News } from '@/types/news';
 
-type PageProps = {
-  params: {
-    slug: string;
-  };
-};
-
-export default async function NewsDetailPage({ params }: PageProps) {
+export default async function NewsDetailPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
   try {
     const data = await client.get<News>({
       endpoint: 'news',
