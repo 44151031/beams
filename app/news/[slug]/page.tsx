@@ -3,13 +3,13 @@ import { notFound } from 'next/navigation';
 import { client } from '@/lib/client';
 import type { News } from '@/types/news';
 
-type Props = {
+type PageProps = {
   params: {
     slug: string;
   };
 };
 
-export default async function NewsDetailPage({ params }: Props) {
+export default async function NewsDetailPage({ params }: PageProps) {
   try {
     const data = await client.get<News>({
       endpoint: 'news',
@@ -19,7 +19,9 @@ export default async function NewsDetailPage({ params }: Props) {
     return (
       <main className="p-6">
         <h1 className="text-2xl font-bold mb-2">{data.title}</h1>
-        <p className="text-sm text-gray-500 mb-4">{new Date(data.publishedAt).toLocaleDateString()}</p>
+        <p className="text-sm text-gray-500 mb-4">
+          {new Date(data.publishedAt).toLocaleDateString()}
+        </p>
         <div
           className="prose"
           dangerouslySetInnerHTML={{ __html: data.content }}
@@ -27,7 +29,7 @@ export default async function NewsDetailPage({ params }: Props) {
       </main>
     );
   } catch (error) {
-    console.error(error); // ログ出力すれば ESLint を回避
-    notFound(); // このまま処理を継続
+    console.error(error);
+    notFound();
   }
 }
