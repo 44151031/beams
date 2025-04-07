@@ -108,6 +108,15 @@ export default async function Home() {
                 美容室は毎月のサイクルで通うからこそ、美と健康のお悩みや状態を見てアドバイスさせていただき、
                 皆様にとって街の主治医のような存在になりたいと考えています。
               </p>
+              <section className="!font-notoserif">
+  <h2 className="text-xl !font-notoserif">Noto Serif の見出し</h2>
+  <p className="mt-2 text-base !font-notoserif">これは Noto Serif JP の本文です。</p>
+</section>
+
+<section className="!font-cormorant">
+  <h2 className="text-xl">Cormorant Garamond の見出し</h2>
+  <p className="mt-2 text-base">これは Cormorant Garamond の本文です。</p>
+</section>
               <div>
                 <Link href="/pages/concept" className="inline-block bg-teal-800 text-white px-6 py-2 rounded-full hover:bg-teal-700 transition">
                   READ MORE
@@ -184,9 +193,6 @@ export default async function Home() {
                 そのために、厳選された製品や施術技術を用いて、お客様の髪や肌に最高のケアを提供しています。
               </p>
             </div>
-            <div className="font-notoserif text-lg">
-  Noto Serif のフォントが適用されています。
-</div>
             {/* メニューブロック */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
               <Link
