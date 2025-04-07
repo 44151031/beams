@@ -100,9 +100,9 @@ export default async function Home() {
             {/* テキストエリア */}
             <div className="md:w-1/2 text-center md:text-left text-gray-800">
               <div className="mb-8">
-                <h2 className="text-4xl font-serif text-teal-800">Concept</h2>
+                <h2 className="text-4xl text-teal-800 cormorant">Concept</h2>
               </div>
-              <h3 className="text-2xl font-semibold mb-6">美と健康に「力」を注いでいます</h3>
+              <h3 className="text-2xl font-semibold mb-6 notoSerif">美と健康に「力」を注いでいます</h3>
               <p className="mb-8 leading-relaxed">
                 FIRSTでは、髪だけではなく、美と健康に「力」を注いでいます。<br /><br />
                 美容室は毎月のサイクルで通うからこそ、美と健康のお悩みや状態を見てアドバイスさせていただき、
@@ -146,10 +146,10 @@ export default async function Home() {
             {/* テキストエリア */}
             <div className="w-full md:w-1/2">
               <div className="mb-6">
-                <h2 className="text-3xl font-bold text-gray-800 mb-2">Commitment</h2>
+                <h2 className="text-3xl font-bold text-gray-800 mb-2 cormorant">Commitment</h2>
                 <p className="text-lg text-teal-700 font-medium">FIRSTのこだわり</p>
               </div>
-              <h2 className="text-3xl font-bold text-gray-800 mb-2">美と健康をトータルに考える</h2>
+              <h2 className="text-3xl font-bold text-gray-800 mb-2notoSerif">美と健康をトータルに考える</h2>
               <p className="text-gray-700 leading-relaxed mb-6">
                 美と健康をトータルに考えることは、私たちの生活全体の質を向上させる重要な要素です。
                 <br />
@@ -228,7 +228,7 @@ export default async function Home() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {galleryImages.map((url, index) => (
                 <div key={index} className="w-full overflow-hidden rounded-lg">
-                  <img
+                  <image
                     src={url}
                     alt={`gallery${index + 1}`}
                     className="w-full h-auto object-cover transition-transform duration-300 hover:scale-105"
