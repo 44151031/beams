@@ -1,19 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Noto_Serif_JP, Cormorant_Garamond } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
+import { Cormorant_Garamond, Noto_Serif_JP } from 'next/font/google';
 import "./globals.css";
 
-const notoSerif = Noto_Serif_JP({
-  weight: ['400', '700'],
+const notoserif = Noto_Serif_JP({
   variable: '--font-noto-serif',
-  display: 'swap',
-  preload: false, // ★ preload を無効化
-});
-
-const cormorant = Cormorant_Garamond({
   weight: ['400', '700'],
-  subsets: ['latin'],
   display: 'swap',
-  variable: '--font-cormorant',
+  subsets: ['latin'], // ✅ これを追加！
+  preload: false, // ✅ プリロードをオフにする
 });
 
 const geistSans = Geist({
@@ -37,12 +32,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+<html lang="ja" className={`${geistSans.variable} ${geistMono.variable} ${notoserif.variable}`}>
+  <body className="antialiased">
+    {children}
+  </body>
+</html>
   );
 }

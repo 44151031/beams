@@ -27,6 +27,7 @@ export default async function NewsDetailPage({ params }: Props) {
       </main>
     );
   } catch (error) {
-    notFound();
+    console.error(error); // ログ出力すれば ESLint を回避
+    notFound(); // このまま処理を継続
   }
 }

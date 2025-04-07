@@ -100,9 +100,9 @@ export default async function Home() {
             {/* テキストエリア */}
             <div className="md:w-1/2 text-center md:text-left text-gray-800">
               <div className="mb-8">
-                <h2 className="text-4xl text-teal-800 cormorant">Concept</h2>
+                <h2 className="text-4xl text-teal-800 font-cormorant">Concept</h2>
               </div>
-              <h3 className="text-2xl font-semibold mb-6 notoSerif">美と健康に「力」を注いでいます</h3>
+              <h3 className="text-2xl font-semibold mb-6 font-notoserif">美と健康に「力」を注いでいます</h3>
               <p className="mb-8 leading-relaxed">
                 FIRSTでは、髪だけではなく、美と健康に「力」を注いでいます。<br /><br />
                 美容室は毎月のサイクルで通うからこそ、美と健康のお悩みや状態を見てアドバイスさせていただき、
@@ -146,10 +146,10 @@ export default async function Home() {
             {/* テキストエリア */}
             <div className="w-full md:w-1/2">
               <div className="mb-6">
-                <h2 className="text-3xl font-bold text-gray-800 mb-2 cormorant">Commitment</h2>
+                <h2 className="text-3xl font-bold text-gray-800 mb-2 font-cormorant">Commitment</h2>
                 <p className="text-lg text-teal-700 font-medium">FIRSTのこだわり</p>
               </div>
-              <h2 className="text-3xl font-bold text-gray-800 mb-2notoSerif">美と健康をトータルに考える</h2>
+              <h2 className="text-3xl font-bold text-gray-800 mb-2 font-notoserif">美と健康をトータルに考える</h2>
               <p className="text-gray-700 leading-relaxed mb-6">
                 美と健康をトータルに考えることは、私たちの生活全体の質を向上させる重要な要素です。
                 <br />
@@ -184,7 +184,9 @@ export default async function Home() {
                 そのために、厳選された製品や施術技術を用いて、お客様の髪や肌に最高のケアを提供しています。
               </p>
             </div>
-
+            <div className="font-notoserif text-lg">
+  Noto Serif のフォントが適用されています。
+</div>
             {/* メニューブロック */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
               <Link
@@ -228,7 +230,7 @@ export default async function Home() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {galleryImages.map((url, index) => (
                 <div key={index} className="w-full overflow-hidden rounded-lg">
-                  <image
+                  <img
                     src={url}
                     alt={`gallery${index + 1}`}
                     className="w-full h-auto object-cover transition-transform duration-300 hover:scale-105"
