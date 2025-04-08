@@ -4,10 +4,9 @@ import Image from "next/image";
 type HeroProps = {
   image: string;
   title: string;
-  subtitle?: string; // オプションにしたい場合は `?` をつける
 };
 
-export default function Hero({ image, title, subtitle }: HeroProps) {
+export default function Hero({ image, title }: HeroProps) {
   return (
     <div className="relative h-[50vh] w-full">
       <Image src={image} alt={title} fill className="object-cover" priority />
