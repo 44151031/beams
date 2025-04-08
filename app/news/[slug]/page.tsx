@@ -22,9 +22,9 @@ interface NewsItem {
 }
 
 interface Props {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 // ✅ 動的ルーティング用の静的パス生成
@@ -36,11 +36,12 @@ export async function generateStaticParams() {
 }
 
 // ✅ SEOメタ情報の生成
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ slug: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const data = await client.get({
     endpoint: "news",
     queries: { filters: `slug[equals]${params.slug}` },
@@ -68,7 +69,8 @@ export async function generateMetadata({
 }
 
 // ✅ お知らせ詳細ページ本体
-export default async function NewsDetailPage({ params }: Props) {
+export default async function NewsDetailPage(props: Props) {
+  const params = await props.params;
   const data = await client.get({
     endpoint: "news",
     queries: { filters: `slug[equals]${params.slug}` },
