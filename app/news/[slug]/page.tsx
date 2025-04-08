@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import Breadcrumb from "@/components/Breadcrumb";
+import Link from 'next/link';
 
 // 型定義
 interface NewsItem {
@@ -92,10 +93,7 @@ export default async function NewsDetailPage({ params }: Props) {
             />
           )}
           <div className="mt-10 text-center">
-            <a
-              href="/news"
-              className="inline-block bg-teal-800 text-white px-6 py-2 rounded hover:bg-teal-700"
-            >
+          <Link href="/news/" className="inline-block bg-teal-800 text-white px-6 py-2 rounded hover:bg-teal-700">News</Link>
               一覧に戻る
             </a>
           </div>

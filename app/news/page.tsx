@@ -1,5 +1,4 @@
 // app/news/page.tsx
-import Image from "next/image";
 import Link from "next/link";
 import { client } from "@/lib/client";
 import Header from "@/components/Header";
