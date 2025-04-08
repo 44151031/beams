@@ -9,12 +9,12 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { label: "コンセプト", href: "/concept/" },
-    { label: "メニュー", href: "/menu/" },
-    { label: "スタッフ紹介", href: "/staff/" },
-    { label: "店舗概要", href: "/about/" },
-    { label: "お知らせ", href: "/news/" },
-    { label: "WEB予約・求人応募", href: "/contact/" },
+    { label: "コンセプト", href: "/concept" },
+    { label: "メニュー", href: "/menu" },
+    { label: "スタッフ紹介", href: "/staff" },
+    { label: "店舗概要", href: "/about" },
+    { label: "お知らせ", href: "/news" },
+    { label: "WEB予約・求人応募", href: "/contact" },
   ];
 
   return (
