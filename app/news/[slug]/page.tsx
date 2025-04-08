@@ -1,26 +1,32 @@
+// app/news/[slug]/page.tsx
 import { client } from "@/lib/client";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import Hero from "@/components/Hero";
+import Breadcrumb from "@/components/Breadcrumb";
 
-// 型定義（必要に応じて types/news.ts に切り出してもOK）
-type NewsItem = {
+// 型定義
+interface NewsItem {
   id: string;
-  title: string;
   slug: string;
-  content: string;
+  title: string;
   publishedAt: string;
+  body: string;
   description?: string;
   ogImage?: {
     url: string;
   };
-};
+}
 
-type Props = {
+interface Props {
   params: {
     slug: string;
   };
-};
+}
 
-// ✅ ビルド時にすべての slug を取得して静的生成
+// ✅ 動的ルーティング用の静的パス生成
 export async function generateStaticParams() {
   const data = await client.get({ endpoint: "news" });
   return data.contents.map((item: NewsItem) => ({
@@ -28,20 +34,25 @@ export async function generateStaticParams() {
   }));
 }
 
-// ✅ ページごとのSEOメタ情報
-export async function generateMetadata({ params }: Props) {
+// ✅ SEOメタ情報の生成
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const data = await client.get({
     endpoint: "news",
     queries: { filters: `slug[equals]${params.slug}` },
   });
 
-  const article: NewsItem | undefined = data.contents?.[0];
+  const article: NewsItem | undefined = data?.contents?.[0];
 
-  if (!article) return {};
+  if (!article) {
+    return {
+      title: "記事が見つかりません | 美容室beams",
+      description: "お探しの記事は見つかりませんでした。",
+    };
+  }
 
   return {
     title: `${article.title} | お知らせ | 美容室beams`,
-    description: article.description ?? "",
+    description: article.description ?? "美容室beamsのお知らせ詳細ページです。",
     openGraph: {
       title: article.title,
       description: article.description ?? "",
@@ -51,29 +62,46 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
-// ✅ 実際の表示コンポーネント
+// ✅ お知らせ詳細ページ本体
 export default async function NewsDetailPage({ params }: Props) {
   const data = await client.get({
     endpoint: "news",
     queries: { filters: `slug[equals]${params.slug}` },
   });
 
-  const article: NewsItem | undefined = data.contents?.[0];
+  const article: NewsItem | undefined = data?.contents?.[0];
 
   if (!article) return notFound();
 
   return (
-    <main className="p-10 max-w-3xl mx-auto bg-white min-h-screen">
-      <h1 className="text-3xl font-bold mb-2">{article.title}</h1>
-      <p className="text-sm text-gray-500 mb-6">
-        {new Date(article.publishedAt).toLocaleDateString("ja-JP")}
-      </p>
-      {article.content && (
-        <div
-          className="prose"
-          dangerouslySetInnerHTML={{ __html: article.content }}
-        />
-      )}
-    </main>
+    <>
+      <Header />
+      <main className="bg-white min-h-screen">
+        <Hero image="/images/top/topmain.jpg" title="NEWS" subtitle="お知らせ" />
+        <Breadcrumb current="お知らせ詳細" />
+
+        <section className="max-w-3xl mx-auto px-4 py-12">
+          <p className="text-sm text-gray-500">
+            {new Date(article.publishedAt).toLocaleDateString("ja-JP")}
+          </p>
+          <h1 className="text-2xl font-bold mt-2 mb-6">{article.title}</h1>
+          {article.body && (
+            <div
+              className="prose max-w-none"
+              dangerouslySetInnerHTML={{ __html: article.body }}
+            />
+          )}
+          <div className="mt-10 text-center">
+            <a
+              href="/news"
+              className="inline-block bg-teal-800 text-white px-6 py-2 rounded hover:bg-teal-700"
+            >
+              一覧に戻る
+            </a>
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </>
   );
 }
