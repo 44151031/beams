@@ -8,6 +8,7 @@ import { client } from '@/lib/client';
 interface NewsItem {
   id: string;
   title: string;
+  slug: string;
   publishedAt: string;
   category: {
     id: string;
@@ -65,7 +66,7 @@ export default async function Home() {
                   key={item.id}
                   className="border-b pb-4 hover:opacity-80 transition-opacity"
                 >
-                  <Link href={`/news/${item.id}`}>
+                  <Link href={`/news/${item.slug}`}>
                     <p className="text-sm text-gray-500 font-en">
                       {new Date(item.publishedAt).toLocaleDateString("ja-JP")}
                     </p>

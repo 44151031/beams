@@ -12,10 +12,12 @@ export default async function NewsListPage() {
       <ul className="space-y-4">
         {data.contents.map((news) => (
           <li key={news.id}>
-            <Link href={`/news/${news.id}`} className="text-blue-600 hover:underline">
+            <Link href={`/news/${news.slug}`} className="text-blue-600 hover:underline">
               {news.title}
             </Link>
-            <p className="text-sm text-gray-500">{new Date(news.publishedAt).toLocaleDateString()}</p>
+            <p className="text-sm text-gray-500">
+              {new Date(news.publishedAt).toLocaleDateString('ja-JP')}
+            </p>
           </li>
         ))}
       </ul>

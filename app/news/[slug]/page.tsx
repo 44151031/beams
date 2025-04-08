@@ -1,31 +1,79 @@
-// app/news/[slug]/page.tsx
-import { notFound } from 'next/navigation';
-import { client } from '@/lib/client';
-import type { News } from '@/types/news';
+import { client } from "@/lib/client";
+import { notFound } from "next/navigation";
 
-// ✅ props に型アノテーションをしない（Next.jsが自動で補完）
-export default async function NewsDetailPage(props: { params: Promise<{ slug: string }> }) {
-  const params = await props.params;
-  try {
-    const data = await client.get<News>({
-      endpoint: 'news',
-      contentId: params.slug,
-    });
+// 型定義（必要に応じて types/news.ts に切り出してもOK）
+type NewsItem = {
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  publishedAt: string;
+  description?: string;
+  ogImage?: {
+    url: string;
+  };
+};
 
-    return (
-      <main className="p-6">
-        <h1 className="text-2xl font-bold mb-2">{data.title}</h1>
-        <p className="text-sm text-gray-500 mb-4">
-          {new Date(data.publishedAt).toLocaleDateString()}
-        </p>
+type Props = {
+  params: {
+    slug: string;
+  };
+};
+
+// ✅ ビルド時にすべての slug を取得して静的生成
+export async function generateStaticParams() {
+  const data = await client.get({ endpoint: "news" });
+  return data.contents.map((item: NewsItem) => ({
+    slug: item.slug,
+  }));
+}
+
+// ✅ ページごとのSEOメタ情報
+export async function generateMetadata({ params }: Props) {
+  const data = await client.get({
+    endpoint: "news",
+    queries: { filters: `slug[equals]${params.slug}` },
+  });
+
+  const article: NewsItem | undefined = data.contents?.[0];
+
+  if (!article) return {};
+
+  return {
+    title: `${article.title} | お知らせ | 美容室beams`,
+    description: article.description ?? "",
+    openGraph: {
+      title: article.title,
+      description: article.description ?? "",
+      url: `https://beams-hairsalon.com/news/${article.slug}`,
+      images: article.ogImage ? [{ url: article.ogImage.url }] : [],
+    },
+  };
+}
+
+// ✅ 実際の表示コンポーネント
+export default async function NewsDetailPage({ params }: Props) {
+  const data = await client.get({
+    endpoint: "news",
+    queries: { filters: `slug[equals]${params.slug}` },
+  });
+
+  const article: NewsItem | undefined = data.contents?.[0];
+
+  if (!article) return notFound();
+
+  return (
+    <main className="p-10 max-w-3xl mx-auto bg-white min-h-screen">
+      <h1 className="text-3xl font-bold mb-2">{article.title}</h1>
+      <p className="text-sm text-gray-500 mb-6">
+        {new Date(article.publishedAt).toLocaleDateString("ja-JP")}
+      </p>
+      {article.content && (
         <div
           className="prose"
-          dangerouslySetInnerHTML={{ __html: data.content }}
+          dangerouslySetInnerHTML={{ __html: article.content }}
         />
-      </main>
-    );
-  } catch (error) {
-    console.error(error);
-    notFound();
-  }
+      )}
+    </main>
+  );
 }
