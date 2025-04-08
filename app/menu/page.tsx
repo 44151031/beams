@@ -1,56 +1,73 @@
-// app/pages/menu/page.tsx
-import { client } from '@/lib/client';
+// app/menu/page.tsx
+import { client } from "@/lib/client";
+import type { Metadata } from "next";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import Hero from "@/components/Hero";
+import Breadcrumb from "@/components/Breadcrumb";
 
-type MenuItem = {
+interface MenuItem {
   id: string;
   name: string;
   price: string;
   description?: string;
   category: string;
-};
+}
 
-type GroupedMenu = {
-  [category: string]: MenuItem[];
+export const metadata: Metadata = {
+  title: "メニューページ | 美容室beams",
+  description: "美容室beamsのメニュー一覧です。",
 };
 
 export default async function MenuPage() {
-  const data = await client.get({ endpoint: 'menu' });
-  const items: MenuItem[] = data.contents;
+  const data = await client.get({ endpoint: "menu" });
+  const menuItems: MenuItem[] = data.contents;
 
-  // カテゴリごとにグループ化
-  const groupedMenu: GroupedMenu = items.reduce((acc, item) => {
-    const cat = item.category || 'その他';
-    if (!acc[cat]) acc[cat] = [];
-    acc[cat].push(item);
+  const grouped = menuItems.reduce<Record<string, MenuItem[]>>((acc, item) => {
+    if (!acc[item.category]) acc[item.category] = [];
+    acc[item.category].push(item);
     return acc;
-  }, {} as GroupedMenu);
+  }, {});
 
   return (
-    <main className="p-10 bg-white min-h-screen max-w-3xl mx-auto">
-      <h1 className="text-3xl font-bold mb-8 border-b pb-2 text-center">メニュー</h1>
-      <p className="mb-6 text-center text-gray-600">
-        カット・カラー・パーマなど、豊富なメニューを取り揃えています。
-      </p>
+    <>
+      <Header />
+      <main className="bg-white min-h-screen">
+        <Hero image="/images/top/topmain.jpg" title="menu" />
+                <Breadcrumb current="スタッフ紹介" />
+        <Breadcrumb current="メニュー" />
 
-      {/* カテゴリごとにセクション分け */}
-      {Object.entries(groupedMenu).map(([category, items]) => (
-        <section key={category} className="mb-10">
-          <h2 className="text-xl font-semibold text-pink-600 border-b pb-1 mb-4">{category}</h2>
-          <ul className="space-y-4">
-            {items.map((item) => (
-              <li key={item.id} className="border-b pb-3">
-                <div className="flex justify-between items-center">
-                  <h3 className="text-lg font-medium">{item.name}</h3>
-                  <span className="text-pink-500 font-bold">{item.price}</span>
-                </div>
-                {item.description && (
-                  <p className="text-sm text-gray-600 mt-1">{item.description}</p>
-                )}
-              </li>
-            ))}
-          </ul>
+        <section className="py-12 px-4 bg-white">
+          <div className="max-w-4xl mx-auto">
+            <p className="text-center text-sm text-gray-600 mb-8">
+              お客様の髪型にあわせてご提案いたします。
+            </p>
+            <div className="space-y-12">
+              {Object.entries(grouped).map(([category, items]) => (
+                <section key={category}>
+                  <h2 className="text-xl font-semibold border-b border-gray-300 pb-2 mb-4">
+                    {category}メニュー
+                  </h2>
+                  <ul className="space-y-4">
+                    {items.map((item) => (
+                      <li key={item.id} className="border-b pb-2">
+                        <div className="flex justify-between">
+                          <span className="font-medium">{item.name}</span>
+                          <span>{item.price}</span>
+                        </div>
+                        {item.description && (
+                          <p className="text-sm text-gray-500 mt-1">{item.description}</p>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              ))}
+            </div>
+          </div>
         </section>
-      ))}
-    </main>
+      </main>
+      <Footer />
+    </>
   );
 }

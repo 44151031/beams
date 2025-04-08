@@ -1,4 +1,6 @@
 // components/Hero.tsx
+import Image from "next/image";
+
 type HeroProps = {
   image: string;
   title: string;
@@ -7,11 +9,11 @@ type HeroProps = {
 
 export default function Hero({ image, title, subtitle }: HeroProps) {
   return (
-    <section className="relative h-64 flex items-center justify-center text-white bg-cover bg-center" style={{ backgroundImage: `url(${image})` }}>
-      <div className="text-center">
-        <h1 className="text-4xl font-bold">{title}</h1>
-        {subtitle && <p className="mt-2 text-lg">{subtitle}</p>}
+    <div className="relative h-[50vh] w-full">
+      <Image src={image} alt={title} fill className="object-cover" priority />
+      <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+        <h1 className="text-white text-4xl md:text-5xl font-bold">{title}</h1>
       </div>
-    </section>
+    </div>
   );
 }
