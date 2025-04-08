@@ -1,6 +1,4 @@
 // components/Hero.tsx
-import Image from "next/image";
-
 type HeroProps = {
   image: string;
   title: string;
