@@ -36,7 +36,11 @@ export async function generateStaticParams() {
 }
 
 // ✅ SEOメタ情報の生成
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
   const data = await client.get({
     endpoint: "news",
     queries: { filters: `slug[equals]${params.slug}` },
